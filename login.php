@@ -1,7 +1,9 @@
 <?php
+// Pastikan file ini dipanggil setelah koneksi.php agar fitur deteksi errornya ikut bekerja
 session_start();
 include 'koneksi.php';
 
+// Jika sudah login, langsung arahkan ke halaman masing-masing
 if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == 'admin') header("Location: dashboard_admin.php");
     else if ($_SESSION['role'] == 'penjual') header("Location: dashboard_penjual.php");
@@ -15,16 +17,19 @@ if (isset($_POST['login'])) {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password_input = mysqli_real_escape_string($conn, $_POST['password']);
 
+    // Cek username di database
     $cek = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
     
     if (mysqli_num_rows($cek) > 0) {
         $data = mysqli_fetch_assoc($cek);
         
+        // Pengecekan menggunakan password_verify() karena kita pakai Hashing
         if (password_verify($password_input, $data['password'])) { 
             $_SESSION['id'] = $data['id'];
             $_SESSION['username'] = $data['username'];
             $_SESSION['role'] = $data['role'];
 
+            // Arahkan sesuai Role
             if ($data['role'] == 'admin') {
                 header("Location: dashboard_admin.php");
             } else if ($data['role'] == 'penjual') {
@@ -52,15 +57,79 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
     <style>
-        body { background: linear-gradient(135deg, #f4f6f9 0%, #e8f5e9 100%); font-family: 'Courier New', Courier, monospace; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: #fff; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(17, 138, 68, 0.1); width: 100%; max-width: 400px; border-top: 5px solid #118a44; }
-        .brand-logo { width: 60px; height: 60px; background: #118a44; color: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 15px auto; transform: rotate(-10deg); box-shadow: 0 5px 15px rgba(17,138,68,0.3); }
-        .form-control { border-radius: 10px; padding: 12px 15px; background-color: #f8f9fa; border: 1px solid #eee; }
-        .form-control:focus { box-shadow: none; border-color: #118a44; background-color: #fff; }
-        .btn-login { background: linear-gradient(135deg, #118a44, #18b35a); color: white; border-radius: 10px; font-weight: bold; padding: 12px; border: none; transition: 0.3s; }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(17,138,68,0.4); color: white; }
-        .link-custom { color: #118a44; text-decoration: none; font-weight: bold; }
-        .link-custom:hover { text-decoration: underline; }
+        body { 
+            background: linear-gradient(135deg, #f4f6f9 0%, #e8f5e9 100%); 
+            font-family: 'Courier New', Courier, monospace; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        
+        .login-card { 
+            background: #fff; 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(17, 138, 68, 0.1); 
+            width: 100%; 
+            max-width: 400px; 
+            border-top: 5px solid #118a44; 
+        }
+        
+        .brand-logo { 
+            width: 60px; 
+            height: 60px; 
+            background: #118a44; 
+            color: white; 
+            border-radius: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 30px; 
+            margin: 0 auto 15px auto; 
+            transform: rotate(-10deg); 
+            box-shadow: 0 5px 15px rgba(17,138,68,0.3); 
+        }
+        
+        .form-control { 
+            border-radius: 10px; 
+            padding: 12px 15px; 
+            background-color: #f8f9fa; 
+            border: 1px solid #eee; 
+        }
+        
+        .form-control:focus { 
+            box-shadow: none; 
+            border-color: #118a44; 
+            background-color: #fff; 
+        }
+        
+        .btn-login { 
+            background: linear-gradient(135deg, #118a44, #18b35a); 
+            color: white; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            padding: 12px; 
+            border: none; 
+            transition: 0.3s; 
+        }
+        
+        .btn-login:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(17,138,68,0.4); 
+            color: white; 
+        }
+        
+        .link-custom { 
+            color: #118a44; 
+            text-decoration: none; 
+            font-weight: bold; 
+        }
+        
+        .link-custom:hover { 
+            text-decoration: underline; 
+        }
     </style>
 </head>
 <body>
@@ -73,7 +142,9 @@ if (isset($_POST['login'])) {
     </div>
 
     <?php if ($error != ''): ?>
-        <div class="alert alert-danger p-2 small text-center rounded-3 border-0 bg-danger bg-opacity-10 text-danger fw-bold"><i class="bi bi-exclamation-circle-fill me-1"></i> <?php echo $error; ?></div>
+        <div class="alert alert-danger p-2 small text-center rounded-3 border-0 bg-danger bg-opacity-10 text-danger fw-bold">
+            <i class="bi bi-exclamation-circle-fill me-1"></i> <?php echo $error; ?>
+        </div>
     <?php endif; ?>
 
     <form action="" method="POST">
@@ -88,7 +159,6 @@ if (isset($_POST['login'])) {
         <div class="mb-2">
             <div class="d-flex justify-content-between align-items-center">
                 <label class="form-label fw-bold small text-muted m-0">Password</label>
-                <!-- TAMBAHAN LINK LUPA PASSWORD -->
                 <a href="lupa_password.php" class="small text-danger text-decoration-none fw-bold">Lupa Password?</a>
             </div>
             <div class="input-group mt-2">
