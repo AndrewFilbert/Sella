@@ -6,10 +6,10 @@ ini_set('display_errors', 1);
 
 // 2. KREDENSIAL DATABASE (WAJIB DIGANTI!)
 // Silakan ganti tulisan di dalam tanda kutip dengan data dari InfinityFree Anda
-$host = "sqlxxx.infinityfree.com"; // Ganti dengan MySQL Host Name (Contoh: sql105.infinityfree.com)
-$user = "if0_xxxxxxx";             // Ganti dengan MySQL User Name (Contoh: if0_41839028)
-$pass = "password_akun_anda";      // Ganti dengan vPanel / Akun Password Anda
-$db   = "if0_xxxxxxx_sella_db";    // Ganti dengan MySQL Database Name yang Anda buat di cPanel
+$host = "sql308.infinityfree.com"; // Ganti dengan MySQL Host Name (Contoh: sql105.infinityfree.com)
+$user = "if0_41839028";             // Ganti dengan MySQL User Name (Contoh: if0_41839028)
+$pass = "bEcFyJvykrv7xTF";      // Ganti dengan vPanel / Akun Password Anda
+$db   = "if0_41839028_sella_db";    // Ganti dengan MySQL Database Name yang Anda buat di cPanel
 
 // 3. MEMBUAT KONEKSI
 $conn = mysqli_connect($host, $user, $pass, $db);
