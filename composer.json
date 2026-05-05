@@ -1,0 +1,8 @@
+{
+    "name": "sella/website",
+    "description": "Website PHP Sella",
+    "type": "project",
+    "require": {
+        "php": ">=8.0"
+    }
+}
